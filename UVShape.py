@@ -95,13 +95,13 @@ def get_uv_coords(ob='empty', layer='UV_Shape_key', proxy=False):
         bpy.data.meshes.remove(mesh)
     return coords.reshape(v_count, 2)
 
-def total_length(ed='empty', coords='empty', ob='empty'):
+def total_length(ed=None, coords=None, ob=None):
     '''Returns the total length of all edge segments'''
-    if ob == 'empty':
+    if ob is None:
         ob = bpy.context.object
-    if coords == 'empty':    
+    if coords is None:    
         coords = get_coords(ob)
-    if ed == 'empty':    
+    if ed is None:    
         ed = get_edge_idx(ob)
     edc = coords[ed]
     e1 = edc[:, 0]
@@ -186,9 +186,9 @@ def find_linked(ob, vert, per_face='empty'):
             return np.array(f_set, dtype=np.int64)
             
         cull = np.in1d(new_verts, vert)
-        vert = new_verts[-cull]
-        verts_per_face = verts_per_face[-booly]
-        fidx = fidx[-booly]
+        vert = new_verts[~cull]
+        verts_per_face = verts_per_face[~booly]
+        fidx = fidx[~booly]
     
 def divide_garment(ob, dict):
     '''Creates a set of bool arrays and a set of number arrays
